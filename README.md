@@ -18,8 +18,8 @@
     &lt;/dependency&gt;
 </code></pre>
 
-#配置方法一(简单应用)
-web.xml
+#配置方法一(QuickStart)
+web.xml配置
 ~~~ xml
 <!DOCTYPE web-app PUBLIC
  "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
@@ -58,8 +58,8 @@ web.xml
     </filter-mapping>
 </web-app>
 ~~~
-#配置方法二（采用spring管理redis连接池）
-spring配置
+#配置方法二（集成spring）
+Spring配置
 ~~~ xml
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
