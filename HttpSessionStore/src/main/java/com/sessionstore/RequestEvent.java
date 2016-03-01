@@ -11,13 +11,13 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author sunyujia@aliyun.com
  */
-public class RequestEventSubject extends Observable {
+public class RequestEvent extends Observable {
     protected SessionStoreManager sessionStoreManager;
     private HttpServletResponse response;
     private HttpServletRequest request;
 
-    public RequestEventSubject(HttpServletRequest request, HttpServletResponse response,
-                               SessionStoreManager sessionStoreManager) {
+    public RequestEvent(HttpServletRequest request, HttpServletResponse response,
+                        SessionStoreManager sessionStoreManager) {
         super();
         this.sessionStoreManager = sessionStoreManager;
         this.response = response;

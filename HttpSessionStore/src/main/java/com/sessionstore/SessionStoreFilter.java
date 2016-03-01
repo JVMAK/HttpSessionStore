@@ -36,17 +36,17 @@ public class SessionStoreFilter implements Filter {
             throws IOException, ServletException {
         boolean enable = sessionStoreManager.isEnableRedisStore();
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        if ((!enable) || (!shouldFilter(request) || (request instanceof SessionHttpServletRequestWrapper))) {
+        if ((!enable) || (!shouldFilter(request) || (request instanceof HttpRequestWrapper))) {
             fc.doFilter(servletRequest, servletResponse);
             return;
         }
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-        RequestEventSubject requestEventSubject = new RequestEventSubject(request, response, sessionStoreManager);
-        HttpServletRequestWrapper requestWrapper = sessionStoreManager.getRequestWrapper(requestEventSubject);
+        RequestEvent requestEvent = new RequestEvent(request, response, sessionStoreManager);
+        HttpServletRequestWrapper requestWrapper = sessionStoreManager.getRequestWrapper(requestEvent);
         try {
             fc.doFilter(requestWrapper, servletResponse);
         } finally {
-            requestEventSubject.completed(request, response);
+            requestEvent.completed(request, response);
         }
     }
 

@@ -7,8 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpSession;
 
-import com.sessionstore.RequestEventSubject;
-import com.sessionstore.SessionHttpServletRequestWrapper;
+import com.sessionstore.RequestEvent;
+import com.sessionstore.HttpRequestWrapper;
 import com.sessionstore.SessionStoreManager;
 import com.sessionstore.serializer.Serializer;
 import com.sessionstore.util.CookieUtils;
@@ -139,11 +139,11 @@ public class RedisSessionStoreManager implements SessionStoreManager {
     }
 
     @Override
-    public HttpSession getSession(RequestEventSubject requestEventSubject, boolean create) {
-        SessionMap sessionMap = getSession(requestEventSubject.getRequest(), create);
+    public HttpSession getSession(RequestEvent requestEvent, boolean create) {
+        SessionMap sessionMap = getSession(requestEvent.getRequest(), create);
         if (sessionMap != null) {
-            RedisSessionProxy sessionProxy = new RedisSessionProxy(requestEventSubject.getRequest(), requestEventSubject.getResponse(), sessionMap, this);
-            requestEventSubject.addObserver(sessionProxy);
+            RedisSessionProxy sessionProxy = new RedisSessionProxy(requestEvent.getRequest(), requestEvent.getResponse(), sessionMap, this);
+            requestEvent.addObserver(sessionProxy);
             sessionProxy.writeCookie();
             return sessionProxy;
         }
@@ -151,8 +151,8 @@ public class RedisSessionStoreManager implements SessionStoreManager {
     }
 
     @Override
-    public HttpServletRequestWrapper getRequestWrapper(RequestEventSubject requestEventSubject) {
-        SessionHttpServletRequestWrapper requestWrapper = new SessionHttpServletRequestWrapper(requestEventSubject);
+    public HttpServletRequestWrapper getRequestWrapper(RequestEvent requestEvent) {
+        HttpRequestWrapper requestWrapper = new HttpRequestWrapper(requestEvent);
         return requestWrapper;
     }
 
@@ -271,11 +271,8 @@ public class RedisSessionStoreManager implements SessionStoreManager {
      * @param request
      * @return
      */
-    public String getSessionId(HttpServletRequest request) {
-        String sid = (String) request.getAttribute(getSidKey());
-        if (sid == null || "".equals(sid)) {
-            sid = CookieUtils.getCookieValue(request.getCookies(), getSidKey(), null);
-        }
+    private String getSessionId(HttpServletRequest request) {
+        String sid = CookieUtils.getCookieValue(request.getCookies(), getSidKey(), null);
         if ("".equals(sid)) {
             sid = null;
         }

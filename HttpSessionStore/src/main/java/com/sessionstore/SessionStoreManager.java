@@ -13,18 +13,18 @@ public interface SessionStoreManager {
 	
 	/**
 	 * 核心方法获取一个session对象
-	 * @param requestEventSubject
+	 * @param requestEvent
 	 * @param create
 	 * @return
 	 */
-	public HttpSession getSession(RequestEventSubject requestEventSubject,boolean create);
+	public HttpSession getSession(RequestEvent requestEvent,boolean create);
 	
 	/**
 	 * 返回一个request装饰类
-	 * @param requestEventSubject
+	 * @param requestEvent
 	 * @return
 	 */
-	public HttpServletRequestWrapper getRequestWrapper(RequestEventSubject requestEventSubject);
+	public HttpServletRequestWrapper getRequestWrapper(RequestEvent requestEvent);
 	
 	
 	/**

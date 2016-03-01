@@ -9,14 +9,14 @@ import javax.servlet.http.HttpSession;
  *
  * @author sunyujia@aliyun.com
  */
-public class SessionHttpServletRequestWrapper extends HttpServletRequestWrapper {
+public class HttpRequestWrapper extends HttpServletRequestWrapper {
 
     private HttpSession session;
-    private RequestEventSubject requestEventSubject;
+    private RequestEvent requestEvent;
 
-    public SessionHttpServletRequestWrapper(RequestEventSubject requestEventSubject) {
-        super(requestEventSubject.getRequest());
-        this.requestEventSubject = requestEventSubject;
+    public HttpRequestWrapper(RequestEvent requestEvent) {
+        super(requestEvent.getRequest());
+        this.requestEvent = requestEvent;
     }
 
     @Override
@@ -29,7 +29,7 @@ public class SessionHttpServletRequestWrapper extends HttpServletRequestWrapper 
         if (session != null) {
             return session;
         }
-        this.session = requestEventSubject.getSessionStoreManager().getSession(this.requestEventSubject, create);
+        this.session = requestEvent.getSessionStoreManager().getSession(this.requestEvent, create);
         return session;
     }
 
