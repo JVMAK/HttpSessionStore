@@ -2,31 +2,22 @@
  "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 <web-app>
-  <display-name>demo</display-name>
+  <display-name>Archetype Created Web Application</display-name>
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            classpath:applicationContext.xml
+        </param-value>
+    </context-param>
     <filter>
         <filter-name>SessionStoreFilter</filter-name>
-        <filter-class>com.sessionstore.SessionStoreFilter</filter-class>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
         <init-param>
-            <param-name>redisIp</param-name>
-            <param-value>127.0.0.1</param-value>
-        </init-param>
-        <init-param>
-            <param-name>redisPort</param-name>
-            <param-value>6379</param-value>
-        </init-param>
-        <init-param>
-            <param-name>redisTimeout</param-name>
-            <param-value>5000</param-value>
-        </init-param>
-        <init-param>
-	    <!-- 会话最大非活动时间（单位秒） -->
-            <param-name>sessionTimeout</param-name>
-            <param-value>300</param-value>
-        </init-param>
-        <init-param>
-	    <!-- 域名,例如:baidu.com 或 空 -->
-            <param-name>cookieDomain</param-name>
-            <param-value></param-value>
+            <param-name>targetBeanName</param-name>
+            <param-value>sessionStoreFilter</param-value>
         </init-param>
     </filter>
     <filter-mapping>
