@@ -1,12 +1,12 @@
 # HttpSessionStore
 本项目提供了Clustered Sessions功能，采用外置的Redis来存储Session数据，以此来解决Session共享的问题,实现Non-sticky Session。
 
-* 实现原理:通过Filter，借助HttpServletRequestWrapper覆盖getSession()方法，接管创建和管理Session的工作。
-* 核心特性:对应用来讲是完全透明的,支持在不跨域的前提下,跨应用的session共享.
-* 类似项目:类似的开源项目有tomcat-redis-session-manager,memcached-session-manager,spring-session等。
-* 兼 容 性:Tomcat和Jetty测试通过,理论上兼容其他WEB中间件。
-* 设计模式:观察者,代理,装饰。
-* 扩 展 性:通过实现com.sessionstore.SessionStoreManager接口,可以增加memcached等其他Nosql的实现。
+* 实现原理: 通过Filter，借助HttpServletRequestWrapper覆盖getSession()方法，接管创建和管理Session的工作。
+* 核心特性: 对应用来讲是完全透明的,支持在不跨域的前提下,跨应用的session共享.
+* 类似项目: 类似的开源项目有tomcat-redis-session-manager,memcached-session-manager,spring-session等。
+* 兼 容 性: Tomcat和Jetty测试通过,理论上兼容其他Web容器。
+* 设计模式: 观察者、代理、装饰。
+* 扩 展 性: 通过实现com.sessionstore.SessionStoreManager接口,可以增加memcached等其他Nosql的实现。
 
 ## 使用
 ### maven: 需先编译安装到本地仓库或者本地私服。
