@@ -2,7 +2,7 @@
  "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 <web-app>
-  <display-name>Archetype Created Web Application</display-name>
+  <display-name>demo</display-name>
     <filter>
         <filter-name>SessionStoreFilter</filter-name>
         <filter-class>com.sessionstore.SessionStoreFilter</filter-class>
@@ -19,8 +19,14 @@
             <param-value>5000</param-value>
         </init-param>
         <init-param>
+	    <!-- 会话最大非活动时间（单位秒） -->
             <param-name>sessionTimeout</param-name>
-            <param-value>5000</param-value>
+            <param-value>300</param-value>
+        </init-param>
+        <init-param>
+	    <!-- 域名,例如:baidu.com 或 空 -->
+            <param-name>cookieDomain</param-name>
+            <param-value></param-value>
         </init-param>
     </filter>
     <filter-mapping>
