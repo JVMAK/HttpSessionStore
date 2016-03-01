@@ -24,8 +24,15 @@ public class RedisTemplate {
 	private Serializer serializer=new JavaSerializer();
 	
 	private JedisPool jedisPool;
-	
-	public Serializer getSerializer() {
+
+    public RedisTemplate() {
+    }
+
+    public RedisTemplate(JedisPool jedisPool) {
+        this.jedisPool = jedisPool;
+    }
+
+    public Serializer getSerializer() {
 		return serializer;
 	}
 	public void setSerializer(Serializer serializer) {

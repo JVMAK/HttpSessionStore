@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
 import com.sessionstore.redis.RedisSessionStoreManager;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 
 /**
  * 利用装饰模式，实现对应用系统的透明化处理。
@@ -58,26 +60,32 @@ public class SessionStoreFilter implements Filter {
         this.sessionStoreManager = sessionStoreManager;
     }
 
-
     /**
      * 该方法仅在没有使用spring的org.springframework.web.filter.DelegatingFilterProxy时使用，即直接在web.xml中配置SessionStoreFilter时使用。
      */
     public void init(FilterConfig fc) throws ServletException {
-        RedisSessionStoreManager sessionManager = new RedisSessionStoreManager();
-        sessionManager.setRedisIp(fc.getInitParameter("redisIp"));
-        sessionManager.setRedisPort(Integer.parseInt(fc.getInitParameter("redisPort")));
-        sessionManager.setRedisTimeout(Integer.parseInt(fc.getInitParameter("redisTimeout")));
-        sessionManager.setSessionTimeout(Integer.parseInt(fc.getInitParameter("sessionTimeout")));
+        if(this.sessionStoreManager!=null){
+            return;
+        }
+        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+        String redisIp=fc.getInitParameter("redisIp");
+        Integer redisPort=Integer.parseInt(fc.getInitParameter("redisPort"));
+        Integer redisTimeout=Integer.parseInt(fc.getInitParameter("redisTimeout"));
+        Integer sessionTimeout=Integer.parseInt(fc.getInitParameter("sessionTimeout"));
+        JedisPool jedisPool = new JedisPool(jedisPoolConfig, redisIp, redisPort, redisTimeout);
+        RedisSessionStoreManager redisSessionStoreManager = new RedisSessionStoreManager();
+        redisSessionStoreManager.setJedisPool(jedisPool);
+        redisSessionStoreManager.setSessionTimeout(sessionTimeout);
         String cookieDomain = fc.getInitParameter("cookieDomain");
-        if (cookieDomain != null) {
-            sessionManager.setCookieDomain(cookieDomain);
+        if (cookieDomain != null&&cookieDomain.length()>0) {
+            redisSessionStoreManager.setCookieDomain(cookieDomain.trim());
         }
         String cookiePath = fc.getInitParameter("cookiePath");
         if (cookiePath != null) {
-            sessionManager.setCookiePath(cookiePath);
+            redisSessionStoreManager.setCookiePath(cookiePath);
         }
-        sessionManager.init();
-        this.sessionStoreManager = sessionManager;
+        redisSessionStoreManager.init();
+        this.sessionStoreManager = redisSessionStoreManager;
     }
 
     private boolean shouldFilter(HttpServletRequest request) {

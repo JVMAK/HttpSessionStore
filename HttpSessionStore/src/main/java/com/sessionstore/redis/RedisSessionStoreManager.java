@@ -27,12 +27,6 @@ public class RedisSessionStoreManager implements SessionStoreManager {
 
     private String sidKey = "_SID_";
 
-    private String redisIp;
-
-    private int redisPort = 6379;
-
-    private int redisTimeout = 5000;
-
     private String cookiePath = "/";
 
     private String cookieDomain;
@@ -52,14 +46,6 @@ public class RedisSessionStoreManager implements SessionStoreManager {
         this.jedisPool = jedisPool;
     }
 
-    public JedisPoolConfig getJedisPoolConfig() {
-        return jedisPoolConfig;
-    }
-
-    public void setJedisPoolConfig(JedisPoolConfig jedisPoolConfig) {
-        this.jedisPoolConfig = jedisPoolConfig;
-    }
-
     public RedisTemplate getRedisTemplate() {
         return redisTemplate;
     }
@@ -70,33 +56,7 @@ public class RedisSessionStoreManager implements SessionStoreManager {
 
     private JedisPool jedisPool;
 
-    private JedisPoolConfig jedisPoolConfig;
-
     private RedisTemplate redisTemplate;
-
-    public String getRedisIp() {
-        return redisIp;
-    }
-
-    public void setRedisIp(String redisIp) {
-        this.redisIp = redisIp;
-    }
-
-    public int getRedisPort() {
-        return redisPort;
-    }
-
-    public void setRedisPort(int redisPort) {
-        this.redisPort = redisPort;
-    }
-
-    public int getRedisTimeout() {
-        return redisTimeout;
-    }
-
-    public void setRedisTimeout(int redisTimeout) {
-        this.redisTimeout = redisTimeout;
-    }
 
     public String getCookiePath() {
         return cookiePath;
@@ -162,17 +122,8 @@ public class RedisSessionStoreManager implements SessionStoreManager {
         return redisTemplate;
     }
 
-    /**
-     * 初始化该管理器，主要是完成jedis连接池的创建
-     */
     public void init() {
-        if (this.jedisPool == null) {
-            this.jedisPoolConfig = new JedisPoolConfig();
-            this.jedisPool = new JedisPool(jedisPoolConfig, getRedisIp(), getRedisPort(), getRedisTimeout());
-        }
-        if (this.redisTemplate == null) {
-            this.redisTemplate = createRedisTemplate();
-        }
+        this.redisTemplate=new RedisTemplate(jedisPool);
     }
 
     public SessionMap getSession(final HttpServletRequest request, final boolean create) {
