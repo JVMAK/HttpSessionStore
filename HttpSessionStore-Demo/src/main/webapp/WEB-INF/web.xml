@@ -1,0 +1,30 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+<web-app>
+  <display-name>Archetype Created Web Application</display-name>
+    <filter>
+        <filter-name>SessionStoreFilter</filter-name>
+        <filter-class>com.sessionstore.SessionStoreFilter</filter-class>
+        <init-param>
+            <param-name>redisIp</param-name>
+            <param-value>127.0.0.1</param-value>
+        </init-param>
+        <init-param>
+            <param-name>redisPort</param-name>
+            <param-value>6379</param-value>
+        </init-param>
+        <init-param>
+            <param-name>redisTimeout</param-name>
+            <param-value>5000</param-value>
+        </init-param>
+        <init-param>
+            <param-name>sessionTimeout</param-name>
+            <param-value>5000</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>SessionStoreFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+</web-app>
